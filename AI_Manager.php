@@ -4,7 +4,9 @@ Plugin Name: AI Manager
 Description: Gestión de claves API de IA con funciones avanzadas para consultas y generación de texto.
 Version: 1.0
 Author: Marcos Culzoni
-Icon: /wp-content/plugins/mi-plugin/assets/mi_logo.webp
+Icon: /wp-content/plugins/mi-plugin/assets/images/mi_logo.webp
+
+
 */
 
 if (!defined('ABSPATH')) {
