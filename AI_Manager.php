@@ -107,14 +107,15 @@ add_shortcode('mi_plugin_formulario', 'mi_plugin_mostrar_formulario');
 
 
 
-function IA_manager_activation()
+function AI_manager_activation()
 {
     crear_pagina_configuracion();
+    // Aquí se pueden agregar mas funciones para ejecutar con la activación
 }
 
 
 
-register_activation_hook(__FILE__, 'IA_manager_activation'); //hook para crear la pagina al activar el plugin
+register_activation_hook(__FILE__, 'AI_manager_activation'); //hook para crear la pagina al activar el plugin
 
 
 
@@ -147,8 +148,17 @@ function eliminar_pagina_configuracion()
 }
 
 
+function AI_Manager_deactivation()
+{
+    eliminar_pagina_configuracion();
+    // Aquí se pueden agregar mas tareas que se ejecuten en la desactivacion
+    
+}
 
-register_deactivation_hook(__FILE__, 'eliminar_pagina_configuracion');
+
+
+
+register_deactivation_hook(__FILE__, 'AI_Manager_deactivation');
 
 
 
@@ -157,3 +167,12 @@ register_deactivation_hook(__FILE__, 'eliminar_pagina_configuracion');
 -Borrar cualquier tabla o dato creado por el plugin.
 -Eliminar opciones guardadas en wp_options.
 -Asegurar que no quede rastro del plugin en WordPress.   */
+
+
+function AI_Manager_unistall()
+{
+    //Agregar qui todas las tareas de desinstalacion
+    
+}
+
+register_uninstall_hook(__FILE__,'AI_Manager_uninstall');
