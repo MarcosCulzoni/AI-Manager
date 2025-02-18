@@ -143,11 +143,11 @@ function shortcode_ia_respuesta2($atts) {
 }
 
 // Registrar el shortcode en WordPress
+// Ejemplo de short code -> [ia_respuesta pregunta="Define democracia" modelo="gpt-3.5-turbo"]
 
 function shortcode_ia_respuesta($atts){
     return $atts['pregunta'].$atts['modelo'];
 }
-
 add_shortcode('ia_respuesta', 'shortcode_ia_respuesta2');
 
 

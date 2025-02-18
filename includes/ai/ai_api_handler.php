@@ -1,7 +1,9 @@
 
 <?php
 
-/*Este archivo se encarga del manejo  de las conexiones a la API de IA */
+/*Este archivo se encarga del manejo  de las conexiones a la API de IA 
+Esta funcion tendria que recibir absolutamente todos los parametros  que se usan en la consulta
+de esa manera se podrian "ajustar y personalizar" mas los shortcodes*/
 
 // includes/ia/ia_api_handler.php
 if (!defined('ABSPATH')) {
