@@ -1,0 +1,17 @@
+// Definición de roles que se pueden usar en la consulta a la IA:
+
+// 'user' - El rol del usuario. Este es el rol más común y se usa cuando el usuario está enviando un mensaje a la IA.
+'role' => 'user', // El rol del usuario que interactúa con la IA. Este es el valor por defecto para cualquier mensaje del usuario.
+
+// 'assistant' - El rol de la IA. Este rol se usa cuando quieres que la IA responda o interactúe como un asistente.
+'role' => 'assistant', // La IA responderá como asistente, proporcionando respuestas o información solicitada por el usuario.
+
+// 'system' - El rol de sistema. Este se usa para proporcionar contexto o instrucciones iniciales a la IA sobre cómo debe comportarse o cómo debe responder.
+'role' => 'system', // Utilizado para dar instrucciones o contexto a la IA. Ideal para configurar su comportamiento o el tono de las respuestas (por ejemplo, actuar como un chef, un experto en tecnología, etc.).
+
+// 'developer' - El rol del desarrollador. Este rol es utilizado en algunas situaciones para indicar que el mensaje proviene de una fuente interna (como el desarrollador).
+'role' => 'developer', // Aunque no se usa comúnmente, algunos sistemas o aplicaciones pueden usar este rol para diferenciar entre los mensajes del desarrollador y los del usuario o IA.
+
+// 'user_input' - Este rol puede usarse para denotar que el mensaje proviene de una fuente que no es necesariamente un "usuario" directo, pero relevante para la conversación.
+'role' => 'user_input', // Puede ser útil en casos donde la entrada proviene de un sistema automatizado o backend, pero aún se necesita procesarla como una entrada de usuario.
+

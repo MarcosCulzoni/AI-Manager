@@ -151,6 +151,12 @@ function chequearAPI_Key(){
 include_once plugin_dir_path(__FILE__) . 'includes/ai/ai_api_handler.php';
 include_once plugin_dir_path(__FILE__) . 'includes/ai/ai_responses_processor.php';
 
+
+
+
+
+
+
 function shortcode_ia_respuesta2($atts) {
     // Establece valores para los atributos por defecto
     $atts = shortcode_atts([
@@ -162,7 +168,23 @@ function shortcode_ia_respuesta2($atts) {
 
     // Crear una instancia del manejador de IA
     $ia_handler = new IA_API_Handler();
-    $respuesta = $ia_handler->enviar_consulta($atts['pregunta'], $atts['modelo']);
+
+
+
+    //Afinar parametros segun antes de llamar a la funcion enviar_consulta()
+    $params = [
+        'mensaje' => $atts['pregunta'], // El mensaje que el usuario quiere enviar a la IA
+        'modelo' =>  $atts['modelo'], // El modelo de IA que se quiere utilizar (por ejemplo, gpt-4 o gpt-3.5-turbo)
+        'role' => 'user', // El rol de la persona que está enviando el mensaje (por defecto 'user')
+        'temperature' => 0.7, // Controla la aleatoriedad de la respuesta (valor entre 0 y 1)
+        'max_tokens' => 150, // Número máximo de tokens para la respuesta
+        'timeout' => 20 // Tiempo máximo en segundos para esperar la respuesta de la API
+    ];
+
+
+
+
+    $respuesta = $ia_handler->enviar_consulta($params);
 
     return IA_Responses_Processor::procesar_respuesta($respuesta);
 }
@@ -177,6 +199,12 @@ add_shortcode('ia_respuesta', 'shortcode_ia_respuesta2');
 
 
 //----------------------------------------------funciones para el módulo Redes Sociales -------------------------------------------------
+
+
+
+
+
+
 
 
 
