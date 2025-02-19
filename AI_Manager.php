@@ -117,10 +117,35 @@ function AI_manager_activation()
 
 register_activation_hook(__FILE__, 'AI_manager_activation'); //hook para crear la pagina al activar el plugin
 
+//======================================================================================================================================
+//======================== Aquí se definina Todas las funciones  y shortcodes que usan AI para este y otros modulos=====================
+//======================================================================================================================================
 
-/*================================== Aquí se definina Todas las funciones y shortcodes propios de los servicios del módulo======================================================================
 
-Aqui se definen todos los short codes necesarios*/
+
+
+//-------------------------------Funciones para el propio modulo AI_Manager ------------------------------------------------------------
+
+
+
+function chequearAPI_Key(){
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//-------------------------------Funciones par el módulo Menus_QR------------------------------------------------------------------------
 
 
 include_once plugin_dir_path(__FILE__) . 'includes/ai/ai_api_handler.php';
@@ -151,7 +176,7 @@ function shortcode_ia_respuesta($atts){
 add_shortcode('ia_respuesta', 'shortcode_ia_respuesta2');
 
 
-
+//----------------------------------------------funciones para el módulo Redes Sociales -------------------------------------------------
 
 
 
