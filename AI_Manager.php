@@ -7,6 +7,7 @@ Author: Marcos Culzoni
 Icon: /wp-content/plugins/mi-plugin/assets/images/mi_logo.webp
 */
 
+
 if (!defined('ABSPATH')) {
     exit; // Evita el acceso directo al archivo para proteger el sistema
 }
@@ -127,10 +128,42 @@ register_activation_hook(__FILE__, 'AI_manager_activation'); //hook para crear l
 //-------------------------------Funciones para el propio modulo AI_Manager ------------------------------------------------------------
 
 
+function probar_api_key() {
+    // Crear una instancia del manejador de IA
+    $ia_handler = new IA_API_Handler();
 
-function chequearAPI_Key(){
-    
+    // Parámetros de prueba para verificar la API Key
+    $params = [
+        'mensaje' => 'Hola, ¿puedes responder?',
+        'modelo' => 'gpt-3.5-turbo',
+        'role' => 'user',
+        'temperature' => 0.7,
+        'top_p' => 1,
+        'max_tokens' => 50,
+        'presence_penalty' => 0,
+        'frequency_penalty' => 0,
+        'stop' => null,
+        'logit_bias' => null,
+        'user' => null,
+        'timeout' => 10 // Reducido para evitar esperas largas
+    ];
+
+    // Enviar consulta de prueba
+    $respuesta = $ia_handler->enviar_consulta($params);
+
+    // Procesar la respuesta
+    $mensaje_respuesta = IA_Responses_Processor::procesar_respuesta($respuesta);
+
+    // Validar si la API está funcionando correctamente
+    if (strpos($mensaje_respuesta, 'Error:') === 0 || strpos($mensaje_respuesta, 'No se recibió') === 0) {
+        return "No se obtiene respuesta de GPT. Verifique conexión a internet y clave API.";
+    }
+
+    return "API Key OK";
 }
+
+// Shortcode para probar la API desde el panel de administración
+add_shortcode('probar_api_key', 'probar_api_key');
 
 
 
@@ -155,35 +188,33 @@ include_once plugin_dir_path(__FILE__) . 'includes/ai/ai_responses_processor.php
 
 
 
-
-
-function shortcode_ia_respuesta2($atts) {
+function shortcode_ia_respuesta($atts) {
     // Establece valores para los atributos por defecto
     $atts = shortcode_atts([
         'pregunta' => 'Hola, ¿cómo estás?',
         'modelo' => 'gpt-3.5-turbo'
-       // 'modelo' => 'gpt-4'
-
     ], $atts);
 
     // Crear una instancia del manejador de IA
     $ia_handler = new IA_API_Handler();
 
-
-
-    //Afinar parametros segun antes de llamar a la funcion enviar_consulta()
+    // Definir todos los parámetros disponibles para la API
     $params = [
-        'mensaje' => $atts['pregunta'], // El mensaje que el usuario quiere enviar a la IA
-        'modelo' =>  $atts['modelo'], // El modelo de IA que se quiere utilizar (por ejemplo, gpt-4 o gpt-3.5-turbo)
-        'role' => 'user', // El rol de la persona que está enviando el mensaje (por defecto 'user')
-        'temperature' => 0.7, // Controla la aleatoriedad de la respuesta (valor entre 0 y 1)
-        'max_tokens' => 150, // Número máximo de tokens para la respuesta
-        'timeout' => 20 // Tiempo máximo en segundos para esperar la respuesta de la API
+        'mensaje' => $atts['pregunta'], // Mensaje del usuario
+        'modelo' => $atts['modelo'], // Modelo de IA a usar
+        'role' => 'user', // Rol del usuario
+        'temperature' => 0.7, // Aleatoriedad de la respuesta
+        'top_p' => 1, // Nucleic sampling (valores entre 0 y 1)
+        'max_tokens' => 300, // Límite de tokens en la respuesta
+        'presence_penalty' => 0, // Penalización por introducir nuevos temas
+        'frequency_penalty' => 0, // Penalización por repetir frases
+        'stop' => null, // Secuencia de parada (opcional)
+        'logit_bias' => null, // Sesgo en tokens específicos (opcional)
+        'user' => null, // ID del usuario (opcional)
+        'timeout' => 10 // Tiempo máximo de espera para la respuesta
     ];
 
-
-
-
+    // Enviar la consulta a la API
     $respuesta = $ia_handler->enviar_consulta($params);
 
     return IA_Responses_Processor::procesar_respuesta($respuesta);
@@ -191,11 +222,7 @@ function shortcode_ia_respuesta2($atts) {
 
 // Registrar el shortcode en WordPress
 // Ejemplo de short code -> [ia_respuesta pregunta="Define democracia" modelo="gpt-3.5-turbo"]
-
-function shortcode_ia_respuesta($atts){
-    return $atts['pregunta'].$atts['modelo'];
-}
-add_shortcode('ia_respuesta', 'shortcode_ia_respuesta2');
+add_shortcode('ia_respuesta', 'shortcode_ia_respuesta');
 
 
 //----------------------------------------------funciones para el módulo Redes Sociales -------------------------------------------------

@@ -30,55 +30,56 @@ class IA_API_Handler
 
 
 
-    public function enviar_consulta($params)
-
-    {
+    public function enviar_consulta($params) {
         // Verifica si existe la clave API
         if (!$this->api_key) {
             return ['error' => 'No hay clave API configurada.'];
         }
-
-
-        // Asignación de valores a partir del array $params
-        $mensaje = isset($params['mensaje']) ? $params['mensaje'] : '';
-        $modelo = isset($params['modelo']) ? $params['modelo'] : 'gpt-3.5-turbo';
-        $role = isset($params['role']) ? $params['role'] : 'user';
-        $temperature = isset($params['temperature']) ? $params['temperature'] : 0.7;
-        $max_tokens = isset($params['max_tokens']) ? $params['max_tokens'] : 150;
-        $timeout = isset($params['timeout']) ? $params['timeout'] : 30;
-
-
-
-        // Construye los datos de la consulta, usando los valores pasados o los valores por defecto
+    
+        // Construye los datos de la consulta con todos los parámetros dinámicos
         $data = [
-            'model' => $modelo, // Modelo de IA
-            'messages' => [['role' => $role, 'content' => $mensaje]], // El mensaje y el rol (user, assistant, etc.)
-            'temperature' => $temperature, // Controla la aleatoriedad de la respuesta
-            'max_tokens' => $max_tokens // Limita la cantidad de tokens en la respuesta
+            'model' => $params['modelo'],
+            'messages' => [['role' => $params['role'], 'content' => $params['mensaje']]],
+            'temperature' => $params['temperature'],
+            'top_p' => $params['top_p'],
+            'max_tokens' => $params['max_tokens'],
+            'presence_penalty' => $params['presence_penalty'],
+            'frequency_penalty' => $params['frequency_penalty']
         ];
-
+    
+        // Agregar parámetros opcionales solo si no están vacíos
+        if (!empty($params['stop'])) {
+            $data['stop'] = $params['stop'];
+        }
+        if (!empty($params['logit_bias'])) {
+            $data['logit_bias'] = $params['logit_bias'];
+        }
+        if (!empty($params['user'])) {
+            $data['user'] = $params['user'];
+        }
+    
         // Realiza la solicitud POST a la API de OpenAI
         $response = wp_remote_post($this->api_url, [
-            'body' => json_encode($data), // El cuerpo de la solicitud
+            'body' => json_encode($data),
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->api_key,
                 'Content-Type' => 'application/json'
             ],
-            // Definir el timeout (tiempo máximo de espera para la respuesta)
-            'timeout'   => $timeout, // Timeout definido como parámetro
+            'timeout' => $params['timeout']
         ]);
-
+    
         // Verifica si hay algún error en la solicitud HTTP
         if (is_wp_error($response)) {
             return ['error' => $response->get_error_message()];
         }
-
+    
         // Recupera el cuerpo de la respuesta de la API
-        $body = wp_remote_retrieve_body($response); //se utiliza para extraer el cuerpo de la respuesta que se obtuvo al  hacer una solicitud HTTP 
-
+        $body = wp_remote_retrieve_body($response);
+    
         // Devuelve la respuesta decodificada (array asociativo)
         return json_decode($body, true);
     }
+    
 
 
 
